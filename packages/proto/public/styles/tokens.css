@@ -1,0 +1,24 @@
+:root {
+    --color-accent: #1a5632;
+    --color-accent-hover: #123b22;
+    --color-text-light: white;
+    --color-border: #ddd;
+    --color-background-light: #f9f9f9;
+    --color-background-muted: #f2f2f2;
+    --color-background-alt: #f0f8f1;
+  
+    /* Typography */
+    --font-body: Arial, sans-serif;
+  
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+  
+    /* Layout */
+    --layout-max-width: 1200px;
+    --border-radius: 5px;
+  }
+  
