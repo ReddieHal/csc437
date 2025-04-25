@@ -1,0 +1,141 @@
+/* Pulled heavily from previous classwork and project styles - so a lot of stuff packed
+
+
+*/
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+}
+header {
+    background-color: #1a5632;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+h1, h2, h3 {
+    color: #1a5632;
+}
+.breadcrumb {
+    margin-bottom: 20px;
+}
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+.operator-list, .person-list, .assignment-list, .herd-list, .cattle-list, .family-tree, .offspring-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.operator-card, .person-card, .assignment-card, .herd-card, .cattle-card, .family-card, .offspring-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px;
+    background-color: #f9f9f9;
+}
+.section {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+a {
+    color: #1a5632;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.dashboard-links {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.dashboard-links a {
+    background-color: #1a5632;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    flex: 1;
+    text-align: center;
+}
+.dashboard-links a:hover {
+    background-color: #123b22;
+    text-decoration: none;
+}
+.resource-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.resource-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 250px;
+    background-color: #f9f9f9;
+}
+.stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.stat-card {
+    background-color: #f0f8f1;
+    border-radius: 5px;
+    padding: 15px;
+    flex: 1;
+    text-align: center;
+}
+.stat-card h3 {
+    margin-top: 0;
+}
+
+.schedule {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+}
+.schedule th, .schedule td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.schedule th {
+    background-color: #f2f2f2;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+.tabs button {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px 5px 0 0;
+}
+.tabs button.active {
+    background-color: #1a5632;
+    color: white;
+}
+
+svg.icon {
+    display: inline;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: top;
+}
