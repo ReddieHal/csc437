@@ -6,9 +6,12 @@
     --color-background-light: #f9f9f9;
     --color-background-muted: #f2f2f2;
     --color-background-alt: #f0f8f1;
+
+
   
     /* Typography */
-    --font-body: Arial, sans-serif;
+    --font-body: "DM Serif Text", Arial, sans-serif;
+    --font-display: "DM Serif Display", Arial, sans-serif;
   
     /* Spacing */
     --spacing-xs: 8px;

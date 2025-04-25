@@ -4,6 +4,7 @@
 */
 body {
     font-family: var(--font-body);
+    color: var(--color-accent-light);
     max-width: var(--layout-max-width);
     margin: 0 auto;
     padding: var(--spacing-lg);
@@ -11,16 +12,23 @@ body {
 }
 
 header {
+    font-family: var(--font-display);
     background-color: var(--color-accent);
-    color: var(--color-text-light);
+    color: var(--color-accent-hover);
     padding: var(--spacing-lg);
     text-align: center;
     margin-bottom: var(--spacing-xl);
     border-radius: var(--border-radius);
 }
 
-h1, h2, h3 {
-    color: var(--color-accent);
+h1 {
+    font-family: var(--font-display);
+    color: var(--color-text-light);
+}
+h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-accent-hover);
+    margin-bottom: var(--spacing-sm);
 }
 
 .breadcrumb {
@@ -35,6 +43,7 @@ h1, h2, h3 {
 }
 
 .operator-list, .person-list, .assignment-list, .herd-list, .cattle-list, .family-tree, .offspring-list {
+    color: var(--color-accent-hover);
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-lg);
@@ -42,6 +51,7 @@ h1, h2, h3 {
 }
 
 .operator-card, .person-card, .assignment-card, .herd-card, .cattle-card, .family-card, .offspring-card {
+    color: var(--color-accent-hover);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius);
     padding: var(--spacing-md);
@@ -155,8 +165,8 @@ a:hover {
 
 svg.icon {
     display: inline;
-    width: 1em;
-    height: 1em;
-    fill: currentColor;
+    width: 7em;
+    height: 7em;
+    fill: var(--color-accent-light);
     vertical-align: top;
 }
