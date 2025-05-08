@@ -1,0 +1,36 @@
+:root {
+  --color-accent: #1a5632;
+  --color-text: #1a1a1a;
+  --color-accent-hover: #123b22;
+  --color-text-light: white;
+  --color-border: #ddd;
+  --color-background-light: #f9f9f9;
+  --color-background-muted: #f2f2f2;
+  --color-background-alt: #f0f8f1;
+  --color-background-page: white;
+  --color-background-card: white;
+
+  /* Typography */
+  --font-body: "DM Serif Text", Arial, sans-serif;
+  --font-display: "DM Serif Display", Arial, sans-serif;
+
+  /* Spacing */
+  --spacing-xs: 8px;
+  --spacing-sm: 10px;
+  --spacing-md: 15px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+
+  /* Layout */
+  --layout-max-width: 1200px;
+  --border-radius: 5px;
+}
+
+body.dark-mode {
+  --color-background-page: #0e0e0e;
+  --color-text:            #e5e5e5;
+  --color-background-card: #1b1b1b;
+  --color-border:          #444;
+  --color-accent:          #59d98b;
+  --color-accent-hover:    #7af9a8;
+}
