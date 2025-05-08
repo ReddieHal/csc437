@@ -4,11 +4,13 @@
 */
 body {
     font-family: var(--font-body);
-    color: var(--color-accent-light);
+    color: var(--color-text);
+    background-color: var(--color-background-page);
     max-width: var(--layout-max-width);
     margin: 0 auto;
     padding: var(--spacing-lg);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
@@ -48,6 +50,7 @@ h2, h3 {
     flex-wrap: wrap;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
+    background-color: var(--color-background-page);
 }
 
 .operator-card, .person-card, .assignment-card, .herd-card, .cattle-card, .family-card, .offspring-card {
@@ -56,7 +59,7 @@ h2, h3 {
     border-radius: var(--border-radius);
     padding: var(--spacing-md);
     width: 250px;
-    background-color: var(--color-background-light);
+    background-color: var(--color-background-page);
 }
 
 .section {
