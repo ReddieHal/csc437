@@ -3,6 +3,8 @@ import { connect } from "./services/mongo";
 import {RanchWorker} from "./services/ranch-worker-svc";
 import { Cattle } from "./services/cattle-svc";
 
+import auth, {authenticateUser } from "./routes/auth";
+
 
 // Connect to MongoDB
 connect("ranchup");
@@ -75,7 +77,7 @@ app.delete("/ranch_worker/:userid", (req: Request, res: Response) => {
 });
 
 // Cattle endpoints
-app.get("/cattle/:cattleId", (req: Request, res: Response) => {
+app.get("/api/cattle/:cattleId", (req: Request, res: Response) => {
   const { cattleId } = req.params;
   Cattle.get(cattleId).then((data) => {
     if (data) res
@@ -86,7 +88,7 @@ app.get("/cattle/:cattleId", (req: Request, res: Response) => {
   });
 });
 
-app.get("/cattle", (req: Request, res: Response) => {
+app.get("/api/cattle", (req: Request, res: Response) => {
   Cattle.getAll().then((data) => {
     if (data) res
       .set("Content-Type", "application/json")
@@ -96,7 +98,7 @@ app.get("/cattle", (req: Request, res: Response) => {
   });
 });
 
-app.post("/cattle", (req: Request, res: Response) => {
+app.post("/api/cattle", (req: Request, res: Response) => {
   console.log("Received cattle data:", req.body);
   
   // Check for required fields
@@ -131,7 +133,7 @@ app.post("/cattle", (req: Request, res: Response) => {
   });
 });
 
-app.put("/cattle/:cattleId", (req: Request, res: Response) => {
+app.put("/api/cattle/:cattleId", (req: Request, res: Response) => {
   const { cattleId } = req.params;
   Cattle.update(cattleId, req.body).then((data) => {
     if (data) res
@@ -142,7 +144,7 @@ app.put("/cattle/:cattleId", (req: Request, res: Response) => {
   });
 });
 
-app.delete("/cattle/:cattleId", (req: Request, res: Response) => {
+app.delete("/api/cattle/:cattleId", (req: Request, res: Response) => {
   const { cattleId } = req.params;
   Cattle.delete(cattleId).then((success) => {
     if (success) res.status(204).send();

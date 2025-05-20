@@ -9,10 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 
-    <script type="module" src="../../src/ranch-cattle.ts"></script>
+    <script type="module">
+        import { define } from '@calpoly/mustang';
+        import { RanchCattle } from '../src/ranch-cattle.js';
+        define({ 'ranch-cattle': RanchCattle });
 
-    <link rel="stylesheet" href="../styles/tokens.css">
-    <link rel="stylesheet" href="../styles/page.css">
+    </script>
+
+    <link rel="stylesheet" href="/styles/tokens.css">
+    <link rel="stylesheet" href="/styles/page.css">
 </head>
 <body>
     <div class="breadcrumb">
@@ -21,7 +26,7 @@
 
     <header>
         <svg class="icon">
-            <use href="../icons/ncattle.svg#icon-cattle" />
+            <use href="/icons/ncattle.svg#icon-cattle" />
         </svg>          
         <h1>Cattle Database</h1>
         <p>View and manage cattle records from the MongoDB database</p>
@@ -39,7 +44,7 @@
         <p>Below are the cattle records stored in the MongoDB database:</p>
         
         
-        <ranch-cattle src="/cattle"></ranch-cattle>
+        <ranch-cattle src="/api/cattle"></ranch-cattle>
     </section>
 
     <section class="section">
@@ -133,7 +138,7 @@
             console.log('Submitting cattle data:', cattleData);
             
             try {
-                const response = await fetch('/cattle', {
+                const response = await fetch('/api/cattle', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -156,7 +161,7 @@
                     const parent = cattleElement.parentNode;
                     if (parent) {
                         const newElement = document.createElement('ranch-cattle');
-                        newElement.setAttribute('src', '/cattle');
+                        newElement.setAttribute('src', '/api/cattle');
                         parent.replaceChild(newElement, cattleElement);
                     }
                 }
@@ -176,16 +181,16 @@
                 
                 const cattleElement = document.querySelector('ranch-cattle');
                 if (cattleElement) {
-                    let url = '/cattle';
+                    let url = '/api/cattle';
                     if (tab.textContent === 'Bulls') {
                         url = '/cattle?gender=male';
                     } else if (tab.textContent === 'Heifers') {
-                        url = '/cattle?gender=female';
+                        url = '/api/cattle?gender=female';
                     } else if (tab.textContent === 'Calves') {
                         // For the demo, we'll assume calves are cattle less than a year old
                         const oneYearAgo = new Date();
                         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-                        url = `/cattle?dateOfBirth[gte]=${oneYearAgo.toISOString()}`;
+                        url = `/api/cattle?dateOfBirth[gte]=${oneYearAgo.toISOString()}`;
                     }
                     
                     // Force refresh by removing and adding back the element
@@ -200,6 +205,6 @@
         });
     </script>
     
-    <script type="module" src="../scripts/darkmode.js"></script>
+    <script type="module" src="../public/scripts/darkmode.js"></script>
 </body>
 </html>

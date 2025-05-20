@@ -71,20 +71,20 @@ app.delete("/ranch_worker/:userid", (req, res) => {
     else res.status(404).send();
   });
 });
-app.get("/cattle/:cattleId", (req, res) => {
+app.get("/api/cattle/:cattleId", (req, res) => {
   const { cattleId } = req.params;
   import_cattle_svc.Cattle.get(cattleId).then((data) => {
     if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
     else res.status(404).send();
   });
 });
-app.get("/cattle", (req, res) => {
+app.get("/api/cattle", (req, res) => {
   import_cattle_svc.Cattle.getAll().then((data) => {
     if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
     else res.status(404).send();
   });
 });
-app.post("/cattle", (req, res) => {
+app.post("/api/cattle", (req, res) => {
   console.log("Received cattle data:", req.body);
   const { cattleId, name, breed, gender } = req.body;
   if (!cattleId || !name || !breed || !gender) {
@@ -110,14 +110,14 @@ app.post("/cattle", (req, res) => {
     });
   });
 });
-app.put("/cattle/:cattleId", (req, res) => {
+app.put("/api/cattle/:cattleId", (req, res) => {
   const { cattleId } = req.params;
   import_cattle_svc.Cattle.update(cattleId, req.body).then((data) => {
     if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
     else res.status(404).send();
   });
 });
-app.delete("/cattle/:cattleId", (req, res) => {
+app.delete("/api/cattle/:cattleId", (req, res) => {
   const { cattleId } = req.params;
   import_cattle_svc.Cattle.delete(cattleId).then((success) => {
     if (success) res.status(204).send();
