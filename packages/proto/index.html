@@ -12,13 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 
     <script type="module">
-        import { define } from '@calpoly/mustang';
+        import { define, Auth } from '@calpoly/mustang';
         import { RanchPersonCard } from '/src/ranch-person.js';
         import { RanchPeople } from '/src/ranch-people.js';
         import { RanchCattle } from '/src/ranch-cattle.js';
+        
 
         define({ 'ranch-person-card': RanchPersonCard ,
-            'ranch-people': RanchPeople}
+            'ranch-people': RanchPeople,
+        'mu-auth': Auth.Provider}
         );
         define({ 'ranch-cattle': RanchCattle });
       </script>
