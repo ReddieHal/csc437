@@ -24,11 +24,13 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var import_express = __toESM(require("express"));
 var import_mongo = require("./services/mongo");
 var import_ranch_worker_svc = require("./services/ranch-worker-svc");
+var import_cattle_svc = require("./services/cattle-svc");
 (0, import_mongo.connect)("ranchup");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
 const staticDir = process.env.STATIC || "public";
 app.use(import_express.default.static(staticDir));
+app.use(import_express.default.json());
 app.get("/hello", (req, res) => {
   res.send("Hello, World");
 });
@@ -65,6 +67,59 @@ app.put("/ranch_worker/:userid", import_express.default.json(), (req, res) => {
 app.delete("/ranch_worker/:userid", (req, res) => {
   const { userid } = req.params;
   import_ranch_worker_svc.RanchWorker.delete(userid).then((success) => {
+    if (success) res.status(204).send();
+    else res.status(404).send();
+  });
+});
+app.get("/cattle/:cattleId", (req, res) => {
+  const { cattleId } = req.params;
+  import_cattle_svc.Cattle.get(cattleId).then((data) => {
+    if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
+    else res.status(404).send();
+  });
+});
+app.get("/cattle", (req, res) => {
+  import_cattle_svc.Cattle.getAll().then((data) => {
+    if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
+    else res.status(404).send();
+  });
+});
+app.post("/cattle", (req, res) => {
+  console.log("Received cattle data:", req.body);
+  const { cattleId, name, breed, gender } = req.body;
+  if (!cattleId || !name || !breed || !gender) {
+    return res.status(400).json({
+      message: "Missing required fields",
+      requiredFields: { cattleId, name, breed, gender },
+      missingFields: [
+        !cattleId ? "cattleId" : null,
+        !name ? "name" : null,
+        !breed ? "breed" : null,
+        !gender ? "gender" : null
+      ].filter(Boolean)
+    });
+  }
+  import_cattle_svc.Cattle.create(req.body).then((data) => {
+    if (data) res.status(201).set("Content-Type", "application/json").send(JSON.stringify(data));
+    else res.status(400).json({ message: "Failed to create cattle record. Check your data and try again." });
+  }).catch((error) => {
+    console.error("Error in /cattle POST endpoint:", error);
+    res.status(500).json({
+      message: "Server error while creating cattle record",
+      error: error.message
+    });
+  });
+});
+app.put("/cattle/:cattleId", (req, res) => {
+  const { cattleId } = req.params;
+  import_cattle_svc.Cattle.update(cattleId, req.body).then((data) => {
+    if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
+    else res.status(404).send();
+  });
+});
+app.delete("/cattle/:cattleId", (req, res) => {
+  const { cattleId } = req.params;
+  import_cattle_svc.Cattle.delete(cattleId).then((success) => {
     if (success) res.status(204).send();
     else res.status(404).send();
   });

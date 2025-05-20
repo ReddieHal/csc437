@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { connect } from "./services/mongo";
 import {RanchWorker} from "./services/ranch-worker-svc";
+import { Cattle } from "./services/cattle-svc";
 
 
 // Connect to MongoDB
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000;
 const staticDir = process.env.STATIC || "public";
 
 app.use(express.static(staticDir));
+app.use(express.json());
 
 app.get("/hello", (req: Request, res: Response) => {
     res.send("Hello, World");
@@ -67,6 +69,82 @@ app.put("/ranch_worker/:userid", express.json(), (req: Request, res: Response) =
 app.delete("/ranch_worker/:userid", (req: Request, res: Response) => {
   const { userid } = req.params;
   RanchWorker.delete(userid).then((success) => {
+    if (success) res.status(204).send();
+    else res.status(404).send();
+  });
+});
+
+// Cattle endpoints
+app.get("/cattle/:cattleId", (req: Request, res: Response) => {
+  const { cattleId } = req.params;
+  Cattle.get(cattleId).then((data) => {
+    if (data) res
+      .set("Content-Type", "application/json")
+      .send(JSON.stringify(data));
+    else res
+      .status(404).send();
+  });
+});
+
+app.get("/cattle", (req: Request, res: Response) => {
+  Cattle.getAll().then((data) => {
+    if (data) res
+      .set("Content-Type", "application/json")
+      .send(JSON.stringify(data));
+    else res
+      .status(404).send();
+  });
+});
+
+app.post("/cattle", (req: Request, res: Response) => {
+  console.log("Received cattle data:", req.body);
+  
+  // Check for required fields
+  const { cattleId, name, breed, gender } = req.body;
+  if (!cattleId || !name || !breed || !gender) {
+    return res.status(400).json({
+      message: "Missing required fields",
+      requiredFields: { cattleId, name, breed, gender },
+      missingFields: [
+        !cattleId ? "cattleId" : null,
+        !name ? "name" : null,
+        !breed ? "breed" : null,
+        !gender ? "gender" : null
+      ].filter(Boolean)
+    });
+  }
+  
+  Cattle.create(req.body).then((data) => {
+    if (data) res
+      .status(201)
+      .set("Content-Type", "application/json")
+      .send(JSON.stringify(data));
+    else res
+      .status(400)
+      .json({ message: "Failed to create cattle record. Check your data and try again." });
+  }).catch((error) => {
+    console.error("Error in /cattle POST endpoint:", error);
+    res.status(500).json({ 
+      message: "Server error while creating cattle record",
+      error: error.message
+    });
+  });
+});
+
+app.put("/cattle/:cattleId", (req: Request, res: Response) => {
+  const { cattleId } = req.params;
+  Cattle.update(cattleId, req.body).then((data) => {
+    if (data) res
+      .set("Content-Type", "application/json")
+      .send(JSON.stringify(data));
+    else res
+      .status(404).send();
+  });
+});
+
+app.delete("/cattle/:cattleId", (req: Request, res: Response) => {
+  const { cattleId } = req.params;
+  Cattle.delete(cattleId).then((success) => {
     if (success) res.status(204).send();
     else res.status(404).send();
   });

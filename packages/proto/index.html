@@ -15,10 +15,12 @@
         import { define } from '@calpoly/mustang';
         import { RanchPersonCard } from '/src/ranch-person.js';
         import { RanchPeople } from '/src/ranch-people.js';
+        import { RanchCattle } from '/src/ranch-cattle.js';
 
         define({ 'ranch-person-card': RanchPersonCard ,
             'ranch-people': RanchPeople}
         );
+        define({ 'ranch-cattle': RanchCattle });
       </script>
 
     <link rel="stylesheet" href="/styles/tokens.css">
@@ -39,6 +41,7 @@
     <div class="dashboard-links">
         <a href="/people/peoplemanage.html">People Management</a>
         <a href="/cattle/cattlemanage.html">Cattle Management</a>
+        <a href="/cattle/cattledb.html">Cattle Database</a>
     </div>
 
     <h2>Ranch Operators</h2>
@@ -83,6 +86,7 @@
             <li>Medical history and treatments</li>
             <li>Breeding programs and genealogy</li>
             <li>Growth and production data</li>
+            <li><strong>NEW:</strong> MongoDB database integration for real-time data management</li>
         </ul>
     </div>
 <footer>

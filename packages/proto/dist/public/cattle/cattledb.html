@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cattle Database - Ranch Hand</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+
+
+  <script type="module" crossorigin src="/assets/sub-R1d5piYG.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/ranch-cattle-BOaSP52H.js">
+  <link rel="stylesheet" crossorigin href="/assets/sub-CP0XDpoj.css">
+</head>
+<body>
+    <div class="breadcrumb">
+        <a href="../index.html">Home</a> &gt; <span>Cattle Database</span>
+    </div>
+
+    <header>
+        <svg class="icon">
+            <use href="/assets/ncattle-CJJinhxL.svg#icon-cattle" />
+        </svg>          
+        <h1>Cattle Database</h1>
+        <p>View and manage cattle records from the MongoDB database</p>
+    </header>
+
+    <div class="tabs">
+        <button class="active">All Cattle</button>
+        <button>Bulls</button>
+        <button>Heifers</button>
+        <button>Calves</button>
+    </div>
+
+    <section class="section">
+        <h2>Cattle Records</h2>
+        <p>Below are the cattle records stored in the MongoDB database:</p>
+        
+        
+        <ranch-cattle src="/cattle"></ranch-cattle>
+    </section>
+
+    <section class="section">
+        <h2>Add New Cattle</h2>
+        <form id="cattle-form" class="form">
+            <label>
+                <span>Cattle ID:</span>
+                <input type="text" name="cattleId" required>
+            </label>
+            <label>
+                <span>Name:</span>
+                <input type="text" name="name" required>
+            </label>
+            <label>
+                <span>Breed:</span>
+                <input type="text" name="breed" required>
+            </label>
+            <label>
+                <span>Gender:</span>
+                <select name="gender" required>
+                    <option value="male">Bull</option>
+                    <option value="female">Heifer</option>
+                </select>
+            </label>
+            <label>
+                <span>Weight (lbs):</span>
+                <input type="number" name="weight">
+            </label>
+            <label>
+                <span>Date of Birth:</span>
+                <input type="date" name="dateOfBirth">
+            </label>
+            <label>
+                <span>Health Status:</span>
+                <select name="healthStatus">
+                    <option value="Excellent">Excellent</option>
+                    <option value="Good">Good</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
+                </select>
+            </label>
+            <label>
+                <span>Location:</span>
+                <input type="text" name="location">
+            </label>
+            <button type="submit">Add Cattle</button>
+        </form>
+    </section>
+
+    <footer>
+        <label class="dark-mode-toggle">
+            <input id="darkSwitch" type="checkbox" autocomplete="off">
+            Dark mode
+        </label>
+    </footer>
+
+    
+</body>
+</html>

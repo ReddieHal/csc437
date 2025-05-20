@@ -146,3 +146,56 @@ svg.icon {
     fill: var(--color-accent-light);
     vertical-align: top;
 }
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+}
+
+.form span {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form input, .form select {
+  padding: 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-family: var(--font-body);
+  background-color: var(--color-background-card);
+  color: var(--color-text);
+}
+
+.form button {
+  grid-column: 1 / -1;
+  padding: 10px;
+  background-color: var(--color-accent);
+  color: var(--color-text-light);
+  border: none;
+  border-radius: var(--border-radius);
+  font-family: var(--font-body);
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  justify-self: start;
+  width: 200px;
+}
+
+.form button:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* Dark mode adjustments */
+body.dark-mode .form input,
+body.dark-mode .form select {
+  background-color: #2b2b2b;
+  border-color: #444;
+  color: #e5e5e5;
+}
