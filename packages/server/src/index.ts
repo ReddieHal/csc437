@@ -76,6 +76,8 @@ app.delete("/ranch_worker/:userid", (req: Request, res: Response) => {
   });
 });
 
+app.use("/auth", auth);
+
 // Cattle endpoints
 app.get("/api/cattle/:cattleId", (req: Request, res: Response) => {
   const { cattleId } = req.params;

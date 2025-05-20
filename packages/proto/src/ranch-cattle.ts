@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { Observer } from '@calpoly/mustang';
 
 interface Cattle {
   cattleId: string;
@@ -13,6 +14,19 @@ interface Cattle {
   caretakerId?: string;
 }
 
+// Define Auth.Model interface to match what the Auth.Provider gives us
+interface AuthUser {
+  authenticated: boolean;
+  token?: string;
+  username?: string;
+  [key: string]: any;
+}
+
+interface AuthModel {
+  user?: AuthUser;
+  [key: string]: any;
+}
+
 export class RanchCattle extends LitElement {
   @property() src?: string;
 
@@ -20,16 +34,37 @@ export class RanchCattle extends LitElement {
   @state() private loading = true;
   @state() private error: string | null = null;
 
+  _authObserver = new Observer<AuthModel>(this, "ranch:auth");
+  _user?: AuthUser;
+
   connectedCallback() {
     super.connectedCallback();
+    
+    this._authObserver.observe((auth: AuthModel) => {
+      this._user = auth.user;
+    });
+    
     if (this.src) this.fetchCattle(this.src);
   }
+
+  get authorization(): HeadersInit | undefined {
+    if (this._user?.authenticated && this._user.token) {
+      return {
+        Authorization: `Bearer ${this._user.token}`
+      };
+    }
+    return undefined;
+  }
+
   public async fetchCattle(url: string) {
     try {
       this.loading = true;
       this.error = null;
       
-      const res = await fetch(url);
+      const res = await fetch(url, { 
+        headers: this.authorization 
+      });
+      
       if (!res.ok) {
         const errorText = await res.text();
         throw new Error(`${res.status} ${res.statusText}: ${errorText}`);
@@ -130,5 +165,3 @@ export class RanchCattle extends LitElement {
     `;
   }
 }
-
-customElements.define('ranch-cattle', RanchCattle);

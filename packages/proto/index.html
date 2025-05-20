@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <title>Cattle Management System</title>
@@ -16,87 +15,96 @@
         import { RanchPersonCard } from '/src/ranch-person.js';
         import { RanchPeople } from '/src/ranch-people.js';
         import { RanchCattle } from '/src/ranch-cattle.js';
-        
+        import { HeaderElement } from '/src/header.js';
 
-        define({ 'ranch-person-card': RanchPersonCard ,
+        define({ 
+            'ranch-person-card': RanchPersonCard,
             'ranch-people': RanchPeople,
-        'mu-auth': Auth.Provider}
-        );
-        define({ 'ranch-cattle': RanchCattle });
-      </script>
+            'ranch-cattle': RanchCattle,
+            'ranch-header': HeaderElement,
+            'mu-auth': Auth.Provider
+        });
+        
+        HeaderElement.initializeOnce();
+    </script>
 
     <link rel="stylesheet" href="/styles/tokens.css">
     <link rel="stylesheet" href="/styles/page.css">
 </head>
 <body>
-    <header>
-        <svg class="icon">
-            <use href="/icons/ncattle.svg#icon-cattle" />
-          </svg>          
-          
-        <h1>Ranch Hand - Cattle Management System</h1>
-        <p>Complete management solution for your cattle ranch operations</p>
+    <mu-auth provides="ranch:auth">
+        <ranch-header>
+            Ranch Hand - Cattle Management System
+        </ranch-header>
 
-        
-    </header>
+        <header>
+            <svg class="icon">
+                <use href="/icons/ncattle.svg#icon-cattle" />
+            </svg>          
+              
+            <h1>Ranch Hand - Cattle Management System</h1>
+            <p>Complete management solution for your cattle ranch operations</p>
+        </header>
+        </mu-auth>
 
-    <div class="dashboard-links">
-        <a href="/people/peoplemanage.html">People Management</a>
-        <a href="/cattle/cattlemanage.html">Cattle Management</a>
-        <a href="/dbshow/cattledb.html">Cattle Database</a>
-    </div>
-
-    <h2>Ranch Operators</h2>
-    <p>Select an operator to view their managed resources:</p>
-
-    <div class="operator-list">
-        <div class="operator-card">
-            <h3><a href="/operators/john-smith.html">John Smith</a></h3>
-            <p><strong>Role:</strong> Ranch Manager</p>
-            <p><strong>Experience:</strong> 15 years</p>
-            <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-            <p><a href="/operators/john-smith.html">View Details →</a></p>
+        <div class="dashboard-links">
+            <a href="/people/peoplemanage.html">People Management</a>
+            <a href="/cattle/cattlemanage.html">Cattle Management</a>
+            <a href="/dbshow/cattledb.html">Cattle Database</a>
         </div>
 
-        <div class="operator-card">
-            <h3><a href="/operators/john-smith.html">John Smith</a></h3>
-            <p><strong>Role:</strong> Ranch Manager</p>
-            <p><strong>Experience:</strong> 15 years</p>
-            <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-            <p><a href="/operators/john-smith.html">View Details →</a></p>
+        <h2>Ranch Operators</h2>
+        <p>Select an operator to view their managed resources:</p>
+
+        <div class="operator-list">
+            <div class="operator-card">
+                <h3><a href="/operators/john-smith.html">John Smith</a></h3>
+                <p><strong>Role:</strong> Ranch Manager</p>
+                <p><strong>Experience:</strong> 15 years</p>
+                <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
+                <p><a href="/operators/john-smith.html">View Details →</a></p>
+            </div>
+
+            <div class="operator-card">
+                <h3><a href="/operators/john-smith.html">John Smith</a></h3>
+                <p><strong>Role:</strong> Ranch Manager</p>
+                <p><strong>Experience:</strong> 15 years</p>
+                <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
+                <p><a href="/operators/john-smith.html">View Details →</a></p>
+            </div>
+
+            <div class="operator-card">
+                <h3><a href="/operators/joesphine-smith.html">Josephine Smith</a></h3>
+                <p><strong>Role:</strong> Ranch Manager</p>
+                <p><strong>Experience:</strong> 15 years</p>
+                <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
+                <p><a href="/operators/joesphine-smith.html">View Details →</a></p>
+            </div>
+
+            <!-- using the module -->
+            <ranch-people src="/data/ranchPeople.json"></ranch-people>
         </div>
 
-        <div class="operator-card">
-            <h3><a href="/operators/joesphine-smith.html">Josephine Smith</a></h3>
-            <p><strong>Role:</strong> Ranch Manager</p>
-            <p><strong>Experience:</strong> 15 years</p>
-            <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-            <p><a href="/operators/joesphine-smith.html">View Details →</a></p>
+        <div class="card">
+            <h2>System Overview</h2>
+            <p>The Ranch Hand Cattle Management System provides comprehensive tools for tracking:</p>
+            <ul>
+                <li>Ranch personnel including farmhands and veterinary contractors</li>
+                <li>Cattle herds and individual animal records</li>
+                <li>Medical history and treatments</li>
+                <li>Breeding programs and genealogy</li>
+                <li>Growth and production data</li>
+                <li><strong>NEW:</strong> MongoDB database integration for real-time data management</li>
+            </ul>
         </div>
-
-        <!-- uisng the module -->
-
-        <ranch-people src="/data/ranchPeople.json"></ranch-people>
-    </div>
-
-    <div class="card">
-        <h2>System Overview</h2>
-        <p>The Ranch Hand Cattle Management System provides comprehensive tools for tracking:</p>
-        <ul>
-            <li>Ranch personnel including farmhands and veterinary contractors</li>
-            <li>Cattle herds and individual animal records</li>
-            <li>Medical history and treatments</li>
-            <li>Breeding programs and genealogy</li>
-            <li>Growth and production data</li>
-            <li><strong>NEW:</strong> MongoDB database integration for real-time data management</li>
-        </ul>
-    </div>
-<footer>
-    <label class="dark-mode-toggle">
-        <input id="darkSwitch" type="checkbox" autocomplete="off">
-        Dark mode
-      </label>
-</footer>
+    
+    
+    <footer>
+        <label class="dark-mode-toggle">
+            <input id="darkSwitch" type="checkbox" autocomplete="off">
+            Dark mode
+        </label>
+    </footer>
 </body>
 <script type="module" src="/scripts/darkmode.js"></script>
 </html>

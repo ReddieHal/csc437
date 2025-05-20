@@ -6,7 +6,7 @@ import express, {
 } from "express";
 import jwt from "jsonwebtoken";
 
-import credentials from "../services/credential-svc";
+import credentials from "../services/credentials-svc";
 
 const router = express.Router();
 

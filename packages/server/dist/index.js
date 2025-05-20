@@ -25,6 +25,7 @@ var import_express = __toESM(require("express"));
 var import_mongo = require("./services/mongo");
 var import_ranch_worker_svc = require("./services/ranch-worker-svc");
 var import_cattle_svc = require("./services/cattle-svc");
+var import_auth = __toESM(require("./routes/auth"));
 (0, import_mongo.connect)("ranchup");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
@@ -71,6 +72,7 @@ app.delete("/ranch_worker/:userid", (req, res) => {
     else res.status(404).send();
   });
 });
+app.use("/auth", import_auth.default);
 app.get("/api/cattle/:cattleId", (req, res) => {
   const { cattleId } = req.params;
   import_cattle_svc.Cattle.get(cattleId).then((data) => {

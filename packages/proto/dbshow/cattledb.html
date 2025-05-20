@@ -10,9 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 
     <script type="module">
-        import { define } from '@calpoly/mustang';
+        import { define, Auth } from '@calpoly/mustang';
         import { RanchCattle } from '../src/ranch-cattle.js';
-        define({ 'ranch-cattle': RanchCattle });
+        import { HeaderElement } from '../src/header.js';
+        define({ 
+            'ranch-cattle': RanchCattle,
+            'ranch-header': HeaderElement,
+            'mu-auth': Auth.Provider
+        });
+        
+        HeaderElement.initializeOnce();
 
     </script>
 
@@ -137,12 +144,20 @@
             
             console.log('Submitting cattle data:', cattleData);
             
-            try {
+             try {
+                // Get auth token from mu-auth element
+                const authElement = document.querySelector('mu-auth');
+                let headers = {
+                    'Content-Type': 'application/json',
+                };
+                
+                if (authElement?._context?.user?.authenticated) {
+                    headers.Authorization = `Bearer ${authElement._context.user.token}`;
+                }
+                
                 const response = await fetch('/api/cattle', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: headers,
                     body: JSON.stringify(cattleData),
                 });
                 
@@ -183,7 +198,7 @@
                 if (cattleElement) {
                     let url = '/api/cattle';
                     if (tab.textContent === 'Bulls') {
-                        url = '/cattle?gender=male';
+                        url = '/api/cattle?gender=male';
                     } else if (tab.textContent === 'Heifers') {
                         url = '/api/cattle?gender=female';
                     } else if (tab.textContent === 'Calves') {
