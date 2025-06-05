@@ -1,6 +1,11 @@
 import { css, html, LitElement } from "lit";
 
 export class PeopleViewElement extends LitElement {
+  // Disable Shadow DOM to use global styles
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <div class="breadcrumb">
@@ -51,10 +56,4 @@ export class PeopleViewElement extends LitElement {
       </footer>
     `;
   }
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 }

@@ -13,6 +13,11 @@ export class CattleDbViewElement extends LitElement {
 
   _authObserver = new Observer(this, "ranch:auth");
 
+  // Disable Shadow DOM to use global styles
+  createRenderRoot() {
+    return this;
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this.setupDarkMode();
@@ -209,10 +214,4 @@ export class CattleDbViewElement extends LitElement {
       </footer>
     `;
   }
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 }

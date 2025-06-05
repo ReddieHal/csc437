@@ -42,6 +42,12 @@ const routes = [
   }
 ];
 
+// Fix for dark mode that applies to all views
+document.addEventListener('DOMContentLoaded', () => {
+  const isDarkMode = localStorage.getItem('darkMode') === 'true';
+  document.body.classList.toggle('dark-mode', isDarkMode);
+});
+
 define({
   "mu-auth": Auth.Provider,
   "mu-history": History.Provider,

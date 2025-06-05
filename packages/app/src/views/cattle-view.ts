@@ -1,6 +1,11 @@
 import { css, html, LitElement } from "lit";
 
 export class CattleViewElement extends LitElement {
+  // Disable Shadow DOM to use global styles
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <div class="breadcrumb">
@@ -60,10 +65,4 @@ export class CattleViewElement extends LitElement {
       </footer>
     `;
   }
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 }

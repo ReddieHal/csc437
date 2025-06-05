@@ -7,6 +7,11 @@ define({
 });
 
 export class HomeViewElement extends LitElement {
+  // Disable Shadow DOM to use global styles
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <header>
@@ -52,7 +57,7 @@ export class HomeViewElement extends LitElement {
           <p><a href="/operators/josephine-smith.html">View Details →</a></p>
         </div>
 
-       
+        <!-- using the module -->
         <ranch-people src="/data/ranchPeople.json"></ranch-people>
       </div>
 
@@ -77,10 +82,4 @@ export class HomeViewElement extends LitElement {
       </footer>
     `;
   }
-
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
 }

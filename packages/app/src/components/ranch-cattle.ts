@@ -171,7 +171,7 @@ export class RanchCattle extends LitElement {
                   ${animal.dateOfBirth ? html`<p><strong>DOB:</strong> ${new Date(animal.dateOfBirth).toLocaleDateString()}</p>` : ''}
                   ${animal.healthStatus ? html`<p><strong>Health:</strong> ${animal.healthStatus}</p>` : ''}
                   ${animal.location ? html`<p><strong>Location:</strong> ${animal.location}</p>` : ''}
-                  <a href="/cattle/details/${animal.cattleId}" class="detail-link">View Details →</a>
+                  <a href="/app/cattle/details/${animal.cattleId}" class="detail-link">View Details →</a>
                 </div>
               `)}
             </div>

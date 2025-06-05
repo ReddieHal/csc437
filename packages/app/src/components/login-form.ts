@@ -47,9 +47,12 @@ export class LoginFormElement extends LitElement {
   static styles = [
     css`
       .error:not(:empty) {
-        color: var(--color-error);
-        border: 1px solid var(--color-error);
-        padding: var(--size-spacing-medium);
+        color: #d32f2f;
+        border: 1px solid #d32f2f;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 4px;
+        background-color: #ffebee;
       }
   `];
 
