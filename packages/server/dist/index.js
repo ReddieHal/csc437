@@ -81,8 +81,16 @@ app.get("/api/cattle/:cattleId", (req, res) => {
   });
 });
 app.get("/api/cattle", (req, res) => {
-  import_cattle_svc.Cattle.getAll().then((data) => {
-    if (data) res.set("Content-Type", "application/json").send(JSON.stringify(data));
+  const q = req.query;
+  const mongo = {};
+  if (q.gender === "male" || q.gender === "female") {
+    mongo.gender = q.gender;
+  }
+  if (q["dateOfBirth[gte]"]) {
+    mongo.dateOfBirth = { $gte: new Date(q["dateOfBirth[gte]"]) };
+  }
+  import_cattle_svc.Cattle.list(mongo).then((data) => {
+    if (data) res.json(data);
     else res.status(404).send();
   });
 });

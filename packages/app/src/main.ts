@@ -10,6 +10,8 @@ import { HomeViewElement } from "./views/home-view";
 import { CattleViewElement } from "./views/cattle-view";
 import { CattleDbViewElement } from "./views/cattle-db-view";
 import { PeopleViewElement } from "./views/people-view";
+import './views/signup-view.ts';
+
 
 const routes = [
   {
@@ -39,10 +41,11 @@ const routes = [
   {
     path: "/",
     redirect: "/app"
-  }
+  },
+  { path: '/login', view: 'login-view' },
+  { path: '/newuser', view: 'signup-view' },
 ];
 
-// Fix for dark mode that applies to all views
 document.addEventListener('DOMContentLoaded', () => {
   const isDarkMode = localStorage.getItem('darkMode') === 'true';
   document.body.classList.toggle('dark-mode', isDarkMode);

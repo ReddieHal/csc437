@@ -90,13 +90,23 @@ app.get("/api/cattle/:cattleId", (req: Request, res: Response) => {
   });
 });
 
-app.get("/api/cattle", (req: Request, res: Response) => {
-  Cattle.getAll().then((data) => {
-    if (data) res
-      .set("Content-Type", "application/json")
-      .send(JSON.stringify(data));
-    else res
-      .status(404).send();
+app.get("/api/cattle", (req, res) => {
+  const q = req.query;          // gender, dateOfBirth[gte], etc.
+  const mongo: Record<string, unknown> = {};
+
+  // gender filter  ──────────────
+  if (q.gender === 'male' || q.gender === 'female') {
+    mongo.gender = q.gender;
+  }
+
+  // age filter (dateOfBirth[gte]) ─
+  if (q['dateOfBirth[gte]']) {
+    mongo.dateOfBirth = { $gte: new Date(q['dateOfBirth[gte]'] as string) };
+  }
+
+  Cattle.list(mongo).then(data => {
+    if (data) res.json(data);
+    else      res.status(404).send();
   });
 });
 
@@ -153,3 +163,5 @@ app.delete("/api/cattle/:cattleId", (req: Request, res: Response) => {
     else res.status(404).send();
   });
 });
+
+

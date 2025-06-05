@@ -2,44 +2,17 @@ import { css, html, LitElement } from "lit";
 import { state } from "lit/decorators.js";
 import { define, Observer } from "@calpoly/mustang";
 import { RanchCattle } from "../components/ranch-cattle";
+import { DarkModeMixin } from "../mixins/dark-mode-mixin";
 
 define({
   "ranch-cattle": RanchCattle
 });
 
-export class CattleDbViewElement extends LitElement {
+export class CattleDbViewElement extends DarkModeMixin(LitElement) {
   @state() private cattleUrl = "/api/cattle";
   @state() private refreshKey = 0;
 
   _authObserver = new Observer(this, "ranch:auth");
-
-  // Disable Shadow DOM to use global styles
-  createRenderRoot() {
-    return this;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.setupDarkMode();
-  }
-
-  setupDarkMode() {
-    const darkSwitch = this.shadowRoot?.querySelector('#darkSwitch') || 
-                      document.querySelector('#darkSwitch') as HTMLInputElement;
-    
-    if (darkSwitch) {
-      const isDarkMode = localStorage.getItem('darkMode') === 'true';
-      darkSwitch.checked = isDarkMode;
-      document.body.classList.toggle('dark-mode', isDarkMode);
-      
-      darkSwitch.addEventListener('change', (e) => {
-        const target = e.target as HTMLInputElement;
-        const isDark = target.checked;
-        document.body.classList.toggle('dark-mode', isDark);
-        localStorage.setItem('darkMode', isDark.toString());
-      });
-    }
-  }
 
   handleTabClick(filter: string) {
     // Remove active class from all tabs
@@ -214,4 +187,22 @@ export class CattleDbViewElement extends LitElement {
       </footer>
     `;
   }
+
+  static styles = css`
+    :host {
+      display: block;
+    }
+    
+    .dark-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    .dark-mode-toggle input {
+      cursor: pointer;
+    }
+  `;
 }

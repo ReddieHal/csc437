@@ -21,6 +21,17 @@ export class Cattle {
     }
   }
 
+static async list(filter: Record<string, unknown>): Promise<ICattle[] | null> {
+  try {
+    const cattle = await CattleModel.find(filter).lean();
+    return cattle;
+  } catch (err) {
+    console.error('Error retrieving filtered cattle:', err);
+    return null;
+  }
+}
+
+
   static async create(cattle: ICattle): Promise<ICattle | null> {
     try {
       // Validate required fields

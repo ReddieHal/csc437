@@ -15,16 +15,15 @@
     <link rel="stylesheet" href="/styles/page.css">
 
     <script type="module" src="/src/main.ts"></script>
-    <script type="module" src="/scripts/darkmode.js"></script>
 </head>
 
 <body>
     <mu-history provides="ranch:history">
         <mu-auth provides="ranch:auth" redirect="/login.html">
-            <ranch-header>Ranch Hand - Cattle Management System</ranch-header>
-            <main>
+            <article class="page">
+                <ranch-header>Ranch Hand - Cattle Management System</ranch-header>
                 <mu-switch></mu-switch>
-            </main>
+            </article>
         </mu-auth>
     </mu-history>
 </body>

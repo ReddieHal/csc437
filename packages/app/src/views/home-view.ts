@@ -1,17 +1,15 @@
 import { css, html, LitElement } from "lit";
 import { define } from "@calpoly/mustang";
 import { RanchPeople } from "../components/ranch-people";
+import { DarkModeMixin } from "../mixins/dark-mode-mixin";
+
+
 
 define({
   "ranch-people": RanchPeople
 });
 
-export class HomeViewElement extends LitElement {
-  // Disable Shadow DOM to use global styles
-  createRenderRoot() {
-    return this;
-  }
-
+export class HomeViewElement extends DarkModeMixin(LitElement) {
   render() {
     return html`
       <header>
@@ -34,30 +32,30 @@ export class HomeViewElement extends LitElement {
 
       <div class="operator-list">
         <div class="operator-card">
-          <h3><a href="/operators/john-smith.html">John Smith</a></h3>
+          <h3><a href="/app/operators/john-smith">John Smith</a></h3>
           <p><strong>Role:</strong> Ranch Manager</p>
           <p><strong>Experience:</strong> 15 years</p>
           <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-          <p><a href="/operators/john-smith.html">View Details →</a></p>
+          <p><a href="/app/operators/john-smith">View Details →</a></p>
         </div>
 
         <div class="operator-card">
-          <h3><a href="/operators/john-smith.html">John Smith</a></h3>
-          <p><strong>Role:</strong> Ranch Manager</p>
-          <p><strong>Experience:</strong> 15 years</p>
-          <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-          <p><a href="/operators/john-smith.html">View Details →</a></p>
+          <h3><a href="/app/operators/jane-doe">Jane Doe</a></h3>
+          <p><strong>Role:</strong> Assistant Manager</p>
+          <p><strong>Experience:</strong> 8 years</p>
+          <p><strong>Managing:</strong> 2 farmhands, 180 cattle</p>
+          <p><a href="/app/operators/jane-doe">View Details →</a></p>
         </div>
 
         <div class="operator-card">
-          <h3><a href="/operators/josephine-smith.html">Josephine Smith</a></h3>
+          <h3><a href="/app/operators/josephine-smith">Josephine Smith</a></h3>
           <p><strong>Role:</strong> Ranch Manager</p>
           <p><strong>Experience:</strong> 15 years</p>
           <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-          <p><a href="/operators/josephine-smith.html">View Details →</a></p>
+          <p><a href="/app/operators/josephine-smith">View Details →</a></p>
         </div>
 
-        <!-- using the module -->
+       
         <ranch-people src="/data/ranchPeople.json"></ranch-people>
       </div>
 

@@ -51,6 +51,15 @@ class Cattle {
       return null;
     }
   }
+  static async list(filter) {
+    try {
+      const cattle = await import_cattle.default.find(filter).lean();
+      return cattle;
+    } catch (err) {
+      console.error("Error retrieving filtered cattle:", err);
+      return null;
+    }
+  }
   static async create(cattle) {
     try {
       if (!cattle.cattleId || !cattle.name || !cattle.breed || !cattle.gender) {

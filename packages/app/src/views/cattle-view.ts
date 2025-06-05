@@ -1,11 +1,7 @@
 import { css, html, LitElement } from "lit";
+import { DarkModeMixin } from "../mixins/dark-mode-mixin";
 
-export class CattleViewElement extends LitElement {
-  // Disable Shadow DOM to use global styles
-  createRenderRoot() {
-    return this;
-  }
-
+export class CattleViewElement extends DarkModeMixin(LitElement) {
   render() {
     return html`
       <div class="breadcrumb">
@@ -48,12 +44,12 @@ export class CattleViewElement extends LitElement {
       
       <div class="herd-list">
         <div class="herd-card">
-          <h3><a href="/cattle/herds/examplepasture.html">Example Herd</a></h3>
+          <h3><a href="/app/cattle/herds/examplepasture">Example Herd</a></h3>
           <p><strong>Count:</strong> 150 cattle</p>
           <p><strong>Type:</strong> Mixed</p>
           <p><strong>Location:</strong> Example Pasture (250 acres)</p>
-          <p><strong>Primary Caretaker:</strong> <a href="/people/farmhands/farmhand.html">Farmhand</a></p>
-          <p><a href="/cattle/herds/examplepasture.html">View Herd Details →</a></p>
+          <p><strong>Primary Caretaker:</strong> <a href="/app/people/farmhands/farmhand">Farmhand</a></p>
+          <p><a href="/app/cattle/herds/examplepasture">View Herd Details →</a></p>
         </div>
       </div>
 
@@ -65,4 +61,22 @@ export class CattleViewElement extends LitElement {
       </footer>
     `;
   }
+
+  static styles = css`
+    :host {
+      display: block;
+    }
+    
+    .dark-mode-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    .dark-mode-toggle input {
+      cursor: pointer;
+    }
+  `;
 }
