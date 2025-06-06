@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; }
+    label { display: block; margin-top: 1em; }
+    input { width: 100%; padding: 8px; margin-top: 4px; }
+    button { margin-top: 1.5em; padding: 10px; width: 100%; }
+    .error { color: red; margin-top: 1em; }
+    .success { color: green; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Register</h1>
+  <form id="registerForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required />
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required />
+
+    <button type="submit">Register</button>
+    <div style="margin-top: 1rem; text-align: center;">
+        <p>Already have an account? 
+          <button onclick="window.location.href='login.html'" style="background: none; border: none; color: blue; text-decoration: underline; cursor: pointer;">
+            Login
+          </button>
+          .
+        </p>
+      </div>
+    
+  </form>
+  <div id="message"></div>
+
+  <script>
+    const form = document.getElementById("registerForm");
+    const messageDiv = document.getElementById("message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = "";
+      const username = form.username.value.trim();
+      const password = form.password.value;
+
+      try {
+        const response = await fetch("http://localhost:3000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (response.status === 201) {
+          const data = await response.json();
+          messageDiv.textContent = "Registration successful! You can now log in.";
+          messageDiv.className = "success";
+          localStorage.setItem("token", data.token);
+          window.location.href = "/login.html";
+          // Optionally redirect or clear form
+          form.reset();
+        } else if (response.status === 409) {
+          const err = await response.json();
+          messageDiv.textContent = "Registration failed: " + (err.error || "Username already exists");
+          messageDiv.className = "error";
+        } else {
+          messageDiv.textContent = "Registration failed. Please check your input.";
+          messageDiv.className = "error";
+        }
+      } catch (error) {
+        messageDiv.textContent = "Error registering. Please try again later.";
+        messageDiv.className = "error";
+      }
+    });
+  </script>
+</body>
+</html>

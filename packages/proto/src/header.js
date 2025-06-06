@@ -19,31 +19,36 @@ export class HeaderElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    
-    // Create observer after element is connected
-    this._authObserver = new Observer(this, "ranch:auth");
-    
-    this._authObserver.observe((auth) => {
-      const { user } = auth;
 
-      if (user && user.authenticated) {
-        this.loggedIn = true;
-        this.userid = user.username;
-      } else {
+    // Decode JWT directly from localStorage
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        if (decoded?.username) {
+          this.loggedIn = true;
+          this.userid = decoded.username;
+        }
+      } catch (err) {
+        console.error("Invalid token:", err);
         this.loggedIn = false;
         this.userid = undefined;
       }
-      
-      // Request update to reflect the new state
-      this.requestUpdate();
-    });
+    } else {
+      this.loggedIn = false;
+      this.userid = undefined;
+    }
+
+    this.requestUpdate();
   }
 
   renderSignOutButton() {
     return html`
       <button
-        @click=${(e) => {
-          Events.relay(e, "auth:message", ["auth/signout"])
+        @click=${() => {
+          localStorage.removeItem("token");
+          window.location.href = "/login.html";
         }}
         class="auth-button"
       >
@@ -53,11 +58,7 @@ export class HeaderElement extends LitElement {
   }
 
   renderSignInButton() {
-    return html`
-      <a href="/login.html" class="auth-button">
-        Sign In
-      </a>
-    `;
+    return html` <a href="/login.html" class="auth-button"> Sign In </a> `;
   }
 
   static styles = css`
@@ -71,23 +72,23 @@ export class HeaderElement extends LitElement {
       margin-bottom: var(--spacing-lg, 20px);
       border-radius: var(--border-radius, 5px);
     }
-    
+
     .logo {
       font-family: var(--font-display);
       font-size: 1.5rem;
       margin: 0;
     }
-    
+
     .user-info {
       display: flex;
       align-items: center;
       gap: var(--spacing-md, 15px);
     }
-    
+
     .welcome-text {
       margin: 0;
     }
-    
+
     .auth-button {
       background-color: var(--color-background-page, white);
       color: var(--color-accent, #1a5632);
@@ -100,12 +101,12 @@ export class HeaderElement extends LitElement {
       text-decoration: none;
       display: inline-block;
     }
-    
+
     .auth-button:hover {
       background-color: var(--color-background-muted, #f2f2f2);
       text-decoration: none;
     }
-    
+
     a.auth-button {
       text-decoration: none;
     }
@@ -117,13 +118,10 @@ export class HeaderElement extends LitElement {
         <slot></slot>
       </div>
       <div class="user-info">
-        <p class="welcome-text">
-          Hello, ${this.userid || "traveler"}
-        </p>
-        ${this.loggedIn ? 
-          this.renderSignOutButton() : 
-          this.renderSignInButton()
-        }
+        <p class="welcome-text">Hello, ${this.userid || "traveler"}</p>
+        ${this.loggedIn
+          ? this.renderSignOutButton()
+          : this.renderSignInButton()}
       </div>
     `;
   }
