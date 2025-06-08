@@ -11,6 +11,36 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/tokens.css">
     <link rel="stylesheet" href="../styles/page.css">
+
+    <script>
+  // Check authentication on page load
+  (function() {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      // No token, redirect to login
+      window.location.href = '/login.html';
+      return;
+    }
+    
+    // Optionally validate token isn't expired
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp * 1000; // Convert to milliseconds
+      
+      if (Date.now() > exp) {
+        // Token expired
+        localStorage.removeItem('token');
+        window.location.href = '/login.html';
+      }
+    } catch (err) {
+      // Invalid token
+      localStorage.removeItem('token');
+      window.location.href = '/login.html';
+    }
+  })();
+</script>
+
 </head>
 <body>
     <div class="breadcrumb">
