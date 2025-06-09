@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { connect } from "./services/mongo";
 import {RanchWorker} from "./services/ranch-worker-svc";
 import { Cattle } from "./services/cattle-svc";
+import fs from "node:fs/promises";
+import path from "path";
 
 import auth, {authenticateUser } from "./routes/auth";
 
