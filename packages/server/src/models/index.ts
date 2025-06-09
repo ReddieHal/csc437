@@ -1,3 +1,3 @@
-export { ICattle as Cattle } from './cattle';
-export { IRanchWorker as RanchWorker } from './ranch-worker';
-export { Credential } from './credentials';
+export type { ICattle as Cattle } from './cattle';
+export type { IRanchWorker as RanchWorker } from './ranch-worker';
+export type { Credential } from './credentials';

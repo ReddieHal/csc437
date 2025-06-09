@@ -36,15 +36,39 @@ export default function update(
 
     case "cattle/create":
       createCattle(message[1].cattle, user)
-        .then((cattle) =>
+        .then((cattle) => {
           apply((model) => ({
             ...model,
             cattle: model.cattle ? [...model.cattle, cattle] : [cattle]
-          }))
-        )
-        .catch((error) =>
-          apply((model) => ({ ...model, error: error.message }))
-        );
+          }));
+          const { onSuccess } = message[1];
+          if (onSuccess) onSuccess();
+        })
+        .catch((error: Error) => {
+          const { onFailure } = message[1];
+          if (onFailure) onFailure(error);
+          apply((model) => ({ ...model, error: error.message }));
+        });
+      break;
+
+    case "cattle/save":
+      saveCattle(message[1], user)
+        .then((cattle) => {
+          apply((model) => ({
+            ...model,
+            selectedCattle: cattle,
+            cattle: model.cattle 
+              ? model.cattle.map(c => c.cattleId === cattle.cattleId ? cattle : c)
+              : [cattle]
+          }));
+          const { onSuccess } = message[1];
+          if (onSuccess) onSuccess();
+        })
+        .catch((error: Error) => {
+          const { onFailure } = message[1];
+          if (onFailure) onFailure(error);
+          apply((model) => ({ ...model, error: error.message }));
+        });
       break;
 
     case "worker/load":
@@ -70,6 +94,26 @@ export default function update(
         .catch((error) =>
           apply((model) => ({ ...model, error: error.message }))
         );
+      break;
+
+    case "worker/save":
+      saveWorker(message[1], user)
+        .then((worker) => {
+          apply((model) => ({
+            ...model,
+            selectedWorker: worker,
+            ranchWorkers: model.ranchWorkers
+              ? model.ranchWorkers.map(w => w.userid === worker.userid ? worker : w)
+              : [worker]
+          }));
+          const { onSuccess } = message[1];
+          if (onSuccess) onSuccess();
+        })
+        .catch((error: Error) => {
+          const { onFailure } = message[1];
+          if (onFailure) onFailure(error);
+          apply((model) => ({ ...model, error: error.message }));
+        });
       break;
 
     default:
@@ -131,6 +175,36 @@ function createCattle(cattle: Cattle, user: Auth.User): Promise<Cattle> {
     });
 }
 
+function saveCattle(
+  msg: {
+    cattleId: string;
+    cattle: Cattle;
+  },
+  user: Auth.User
+): Promise<Cattle> {
+  return fetch(`/api/cattle/${msg.cattleId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...Auth.headers(user)
+    },
+    body: JSON.stringify(msg.cattle)
+  })
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error(
+          `Failed to save cattle for ${msg.cattleId}`
+        );
+      }
+    })
+    .then((json: unknown) => {
+      if (json) return json as Cattle;
+      throw new Error("No data returned from server");
+    });
+}
+
 function loadWorkers(user: Auth.User): Promise<RanchWorker[]> {
   return fetch("/ranch_workers", {
     headers: Auth.headers(user)
@@ -160,5 +234,35 @@ function loadWorkerById(workerId: string, user: Auth.User): Promise<RanchWorker>
     .then((json: unknown) => {
       console.log("Worker:", json);
       return json as RanchWorker;
+    });
+}
+
+function saveWorker(
+  msg: {
+    workerId: string;
+    worker: RanchWorker;
+  },
+  user: Auth.User
+): Promise<RanchWorker> {
+  return fetch(`/ranch_worker/${msg.workerId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...Auth.headers(user)
+    },
+    body: JSON.stringify(msg.worker)
+  })
+    .then((response: Response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        throw new Error(
+          `Failed to save worker for ${msg.workerId}`
+        );
+      }
+    })
+    .then((json: unknown) => {
+      if (json) return json as RanchWorker;
+      throw new Error("No data returned from server");
     });
 }

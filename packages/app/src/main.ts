@@ -13,6 +13,7 @@ import update from "./update";
 // Import components
 import { HeaderElement } from "./components/ranch-header";
 import { RanchCattle } from "./components/ranch-cattle";
+import { CattleEditFormElement } from "./components/cattle-edit-form";
 
 // Import views
 import "./views/home-view";
@@ -77,12 +78,12 @@ const routes = [
   }
 ];
 
-// Define all custom elements
 define({
   "ranch-auth": Auth.Provider,
   "ranch-history": History.Provider,
   "ranch-header": HeaderElement,
   "ranch-cattle": RanchCattle,
+  "cattle-edit-form": CattleEditFormElement,
   "ranch-store": class AppStore extends Store.Provider<Model, Msg> {
     constructor() {
       super(update, init, "ranch:auth");

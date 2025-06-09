@@ -2,14 +2,23 @@ import { Cattle, RanchWorker } from "server/models";
 
 export type Msg =
   | ["cattle/load", {}]
-  | ["cattle/loaded", { cattle: Cattle[] }]
   | ["cattle/select", { cattleId: string }]
-  | ["cattle/selected", { cattle: Cattle }]
-  | ["cattle/create", { cattle: Cattle }]
-  | ["cattle/created", { cattle: Cattle }]
+  | ["cattle/create", { 
+      cattle: Cattle;
+      onSuccess?: () => void;
+      onFailure?: (err: Error) => void;
+    }]
+  | ["cattle/save", {
+      cattleId: string;
+      cattle: Cattle;
+      onSuccess?: () => void;
+      onFailure?: (err: Error) => void;
+    }]
   | ["worker/load", {}]
-  | ["worker/loaded", { workers: RanchWorker[] }]
   | ["worker/select", { workerId: string }]
-  | ["worker/selected", { worker: RanchWorker }]
-  | ["error", { message: string }]
-  | ["loading", { isLoading: boolean }];
+  | ["worker/save", {
+      workerId: string;
+      worker: RanchWorker;
+      onSuccess?: () => void;
+      onFailure?: (err: Error) => void;
+    }];

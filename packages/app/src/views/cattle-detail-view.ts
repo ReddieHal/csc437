@@ -84,6 +84,46 @@ export class CattleDetailViewElement extends View<Model, Msg> {
       color: var(--color-accent-hover);
     }
 
+    .actions-card {
+      grid-column: 1 / -1;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+
+    .edit-button, .delete-button {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: none;
+      border-radius: var(--border-radius);
+      font-family: var(--font-body);
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .edit-button {
+      background-color: var(--color-accent);
+      color: var(--color-text-light);
+    }
+
+    .edit-button:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    .delete-button {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-button:hover {
+      background-color: #c82333;
+    }
+
     .loading {
       text-align: center;
       padding: 40px;
@@ -185,10 +225,18 @@ export class CattleDetailViewElement extends View<Model, Msg> {
           ` : html`<p>No assigned caretaker</p>`}
         </div>
 
-        <div class="detail-card">
-          <h3>Actions</h3>
-          <p>Management actions for this animal:</p>
-          <ul>
+        <div class="detail-card actions-card">
+          <h3>Management Actions</h3>
+          <p>Available actions for ${this.cattle.name}:</p>
+          <div class="action-buttons">
+            <a href="/app/cattle/edit/${this.cattle.cattleId}" class="edit-button">
+              Edit Cattle Information
+            </a>
+            <button class="delete-button" @click=${this.handleDelete}>
+              Delete Cattle Record
+            </button>
+          </div>
+          <ul style="margin-top: var(--spacing-md);">
             <li>Update health records</li>
             <li>Record weight measurements</li>
             <li>Update location</li>
@@ -205,6 +253,17 @@ export class CattleDetailViewElement extends View<Model, Msg> {
     const monthsDiff = (now.getFullYear() - birth.getFullYear()) * 12 + 
                       (now.getMonth() - birth.getMonth());
     return Math.max(0, monthsDiff);
+  }
+
+  private handleDelete() {
+    if (!this.cattle) return;
+    
+    const confirmed = confirm(`Are you sure you want to delete ${this.cattle.name}? This action cannot be undone.`);
+    if (confirmed) {
+      console.log(`Deleting cattle: ${this.cattle.cattleId}`);
+      window.history.pushState({}, '', '/app/cattle/database');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
   }
 }
 
