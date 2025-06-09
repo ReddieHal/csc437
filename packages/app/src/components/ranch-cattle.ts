@@ -1,3 +1,4 @@
+// src/components/ranch-cattle.ts
 import { LitElement, html, css } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Observer } from '@calpoly/mustang';
@@ -14,52 +15,33 @@ interface Cattle {
   caretakerId?: string;
 }
 
-// Define Auth.Model interface to match what the Auth.Provider gives us
 interface AuthUser {
   authenticated: boolean;
   token?: string;
   username?: string;
-  [key: string]: any;
 }
 
 interface AuthModel {
   user?: AuthUser;
-  [key: string]: any;
 }
 
 export class RanchCattle extends LitElement {
   @property() src?: string;
-  @property() key?: number; // For forcing refreshes
-
   @state() private cattle: Cattle[] = [];
   @state() private loading = true;
   @state() private error: string | null = null;
 
-  private _authObserver?: Observer<AuthModel>;
-  private _user?: AuthUser;
+  _authObserver = new Observer<AuthModel>(this, "ranch:auth");
+  _user?: AuthUser;
 
   connectedCallback() {
     super.connectedCallback();
     
-    this._authObserver = new Observer<AuthModel>(this, "ranch:auth");
     this._authObserver.observe((auth: AuthModel) => {
       this._user = auth.user;
     });
     
     if (this.src) this.fetchCattle(this.src);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._authObserver = undefined;
-  }
-
-  updated(changedProperties: Map<string, any>) {
-    if (changedProperties.has('src') || changedProperties.has('key')) {
-      if (this.src) {
-        this.fetchCattle(this.src);
-      }
-    }
   }
 
   get authorization(): HeadersInit | undefined {
@@ -180,3 +162,5 @@ export class RanchCattle extends LitElement {
     `;
   }
 }
+
+customElements.define('ranch-cattle', RanchCattle);

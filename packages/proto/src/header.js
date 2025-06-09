@@ -118,7 +118,7 @@ export class HeaderElement extends LitElement {
         <slot></slot>
       </div>
       <div class="user-info">
-        <p class="welcome-text">Hello, ${this.userid || "traveler"}</p>
+        <p class="welcome-text">Hello, ${this.userid || "manager"}</p>
         ${this.loggedIn
           ? this.renderSignOutButton()
           : this.renderSignInButton()}

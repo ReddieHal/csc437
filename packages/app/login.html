@@ -1,54 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Ranch Hand - Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Ranch Hand</title>
   
+  <!-- Load the same fonts and styles as your main app -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/public/styles/tokens.css">
+  <link rel="stylesheet" href="/public/styles/reset.css">
+  
+  <style>
+    body { 
+      font-family: var(--font-body, Arial, sans-serif); 
+      max-width: 400px; 
+      margin: 50px auto; 
+      padding: var(--spacing-lg, 20px);
+      background-color: var(--color-background-page, white);
+      color: var(--color-text, #1a1a1a);
+    }
+    
+    h1 {
+      font-family: var(--font-display, serif);
+      color: var(--color-accent, #1a5632);
+      text-align: center;
+    }
+    
+    label { 
+      display: block; 
+      margin-top: 1em; 
+      font-weight: bold;
+    }
+    
+    input { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 4px; 
+      border: 1px solid var(--color-border, #ddd);
+      border-radius: var(--border-radius, 5px);
+      font-family: inherit;
+    }
+    
+    button { 
+      margin-top: 1.5em; 
+      padding: 10px; 
+      width: 100%; 
+      background-color: var(--color-accent, #1a5632);
+      color: var(--color-text-light, white);
+      border: none;
+      border-radius: var(--border-radius, 5px);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    
+    button:hover {
+      background-color: var(--color-accent-hover, #123b22);
+    }
+    
+    .auth-links {
+      margin-top: 1rem; 
+      text-align: center;
+    }
+    
+    .auth-links button {
+      background: none; 
+      border: none; 
+      color: var(--color-accent, #1a5632); 
+      text-decoration: underline; 
+      cursor: pointer;
+      padding: 0;
+      width: auto;
+      margin: 0;
+    }
+    
+    .error { 
+      color: #d32f2f; 
+      margin-top: 1em; 
+      padding: 10px;
+      background-color: #ffebee;
+      border-radius: var(--border-radius, 5px);
+    }
+    
+    .success { 
+      color: #2e7d32; 
+      margin-top: 1em; 
+      padding: 10px;
+      background-color: #e8f5e8;
+      border-radius: var(--border-radius, 5px);
+    }
+  </style>
+</head>
+<body>
+  <h1>Login to Ranch Hand</h1>
+  <form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required />
 
-  <link rel="stylesheet" href="/styles/tokens.css">
-  <link rel="stylesheet" href="/styles/reset.css">
-  <link rel="stylesheet" href="/styles/page.css">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required />
 
-  <script type="module">
-    import { define, Auth } from "@calpoly/mustang";
-    import { LoginFormElement } from "/src/components/login-form.ts";
+    <button type="submit">Login</button>
+    
+    <div class="auth-links">
+      <p>Don't have an account? 
+        <button type="button" onclick="window.location.href='register.html'">
+          Register
+        </button>
+      </p>
+    </div>
+  </form>
+  <div id="message"></div>
 
-    define({
-      "mu-auth": Auth.Provider,
-      "login-form": LoginFormElement
+  <script>
+    const form = document.getElementById("loginForm");
+    const messageDiv = document.getElementById("message");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      messageDiv.textContent = "";
+      messageDiv.className = "";
+      
+      const username = form.username.value.trim();
+      const password = form.password.value;
+
+      if (!username || !password) {
+        messageDiv.textContent = "Please enter both username and password.";
+        messageDiv.className = "error";
+        return;
+      }
+
+      try {
+        const response = await fetch("/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          messageDiv.textContent = "Login successful! Redirecting...";
+          messageDiv.className = "success";
+          
+          // Save token
+          localStorage.setItem("token", data.token);
+          
+          // Redirect to the SPA
+          setTimeout(() => {
+            window.location.href = "/app";
+          }, 1000);
+          
+        } else {
+          const errorData = await response.json().catch(() => null);
+          messageDiv.textContent = errorData?.error || "Login failed: Invalid username or password.";
+          messageDiv.className = "error";
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        messageDiv.textContent = "Error logging in. Please try again later.";
+        messageDiv.className = "error";
+      }
     });
   </script>
-</head>
-<body class="page">
-  <mu-auth provides="ranch:auth">
-    <article class="page">
-      <header>
-        <h1>Ranch Hand</h1>
-        <p>Cattle Management System</p>
-      </header>
-      
-      <main class="card">
-        <h2>User Login</h2>
-        <login-form api="/auth/login" redirect="/app">
-          <label>
-            <span>Username:</span>
-            <input name="username" autocomplete="off" />
-          </label>
-          <label>
-            <span>Password:</span>
-            <input type="password" name="password" />
-          </label>
-        </login-form>
-        <p>
-          Or did you want to
-          <a href="newuser.html">Sign up as a new user</a>?
-        </p>
-      </main>
-    </article>
-  </mu-auth>
 </body>
 </html>

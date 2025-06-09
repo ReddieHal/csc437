@@ -1,22 +1,46 @@
-import { css, html, LitElement } from "lit";
-import { define } from "@calpoly/mustang";
-import { RanchPeople } from "../components/ranch-people";
-import { DarkModeMixin } from "../mixins/dark-mode-mixin";
+import { LitElement, html, css } from 'lit';
 
+export class HomeViewElement extends LitElement {
+  static styles = css`
+    :host {
+      display: block;
+      padding: var(--spacing-lg);
+    }
 
+    .dashboard-links {
+      display: flex;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+    }
 
-define({
-  "ranch-people": RanchPeople
-});
+    .dashboard-links a {
+      background-color: var(--color-accent);
+      color: var(--color-text-light);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--border-radius);
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+    }
 
-export class HomeViewElement extends DarkModeMixin(LitElement) {
+    .dashboard-links a:hover {
+      background-color: var(--color-accent-hover);
+    }
+
+    .card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+  `;
+
   render() {
     return html`
       <header>
         <svg class="icon">
           <use href="/icons/ncattle.svg#icon-cattle" />
-        </svg>          
-          
+        </svg>
         <h1>Ranch Hand - Cattle Management System</h1>
         <p>Complete management solution for your cattle ranch operations</p>
       </header>
@@ -25,38 +49,6 @@ export class HomeViewElement extends DarkModeMixin(LitElement) {
         <a href="/app/people">People Management</a>
         <a href="/app/cattle">Cattle Management</a>
         <a href="/app/cattle/database">Cattle Database</a>
-      </div>
-
-      <h2>Ranch Operators</h2>
-      <p>Select an operator to view their managed resources:</p>
-
-      <div class="operator-list">
-        <div class="operator-card">
-          <h3><a href="/app/operators/john-smith">John Smith</a></h3>
-          <p><strong>Role:</strong> Ranch Manager</p>
-          <p><strong>Experience:</strong> 15 years</p>
-          <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-          <p><a href="/app/operators/john-smith">View Details →</a></p>
-        </div>
-
-        <div class="operator-card">
-          <h3><a href="/app/operators/jane-doe">Jane Doe</a></h3>
-          <p><strong>Role:</strong> Assistant Manager</p>
-          <p><strong>Experience:</strong> 8 years</p>
-          <p><strong>Managing:</strong> 2 farmhands, 180 cattle</p>
-          <p><a href="/app/operators/jane-doe">View Details →</a></p>
-        </div>
-
-        <div class="operator-card">
-          <h3><a href="/app/operators/josephine-smith">Josephine Smith</a></h3>
-          <p><strong>Role:</strong> Ranch Manager</p>
-          <p><strong>Experience:</strong> 15 years</p>
-          <p><strong>Managing:</strong> 3 farmhands, 240 cattle</p>
-          <p><a href="/app/operators/josephine-smith">View Details →</a></p>
-        </div>
-
-       
-        <ranch-people src="/data/ranchPeople.json"></ranch-people>
       </div>
 
       <div class="card">
@@ -71,13 +63,8 @@ export class HomeViewElement extends DarkModeMixin(LitElement) {
           <li><strong>NEW:</strong> MongoDB database integration for real-time data management</li>
         </ul>
       </div>
-
-      <footer>
-        <label class="dark-mode-toggle">
-          <input id="darkSwitch" type="checkbox" autocomplete="off">
-          Dark mode
-        </label>
-      </footer>
     `;
   }
 }
+
+customElements.define('home-view', HomeViewElement);

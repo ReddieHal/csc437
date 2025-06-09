@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ranch Hand - Cattle Management System</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
-
+    
     <link rel="stylesheet" href="/styles/tokens.css">
     <link rel="stylesheet" href="/styles/reset.css">
     <link rel="stylesheet" href="/styles/page.css">
-
-    <script type="module" src="/src/main.ts"></script>
 </head>
-
 <body>
-    <mu-history provides="ranch:history">
-        <mu-auth provides="ranch:auth" redirect="/login.html">
+    <ranch-history provides="ranch:history">
+        <ranch-auth provides="ranch:auth" redirect="/login.html">
             <article class="page">
-                <ranch-header>Ranch Hand - Cattle Management System</ranch-header>
-                <mu-switch></mu-switch>
+                <ranch-header></ranch-header>
+                <ranch-switch></ranch-switch>
             </article>
-        </mu-auth>
-    </mu-history>
+        </ranch-auth>
+    </ranch-history>
+    
+    <script type="module" src="/src/main.ts"></script>
 </body>
-
 </html>

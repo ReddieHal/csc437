@@ -1,3 +1,4 @@
+// src/main.ts
 import {
   Auth,
   define,
@@ -5,31 +6,59 @@ import {
   Switch
 } from "@calpoly/mustang";
 import { html, LitElement } from "lit";
+
+// Import components
 import { HeaderElement } from "./components/ranch-header";
-import { HomeViewElement } from "./views/home-view";
-import { CattleViewElement } from "./views/cattle-view";
-import { CattleDbViewElement } from "./views/cattle-db-view";
-import { PeopleViewElement } from "./views/people-view";
-import './views/signup-view.ts';
+import { RanchCattle } from "./components/ranch-cattle";
 
+// Import views
+import "./views/home-view";
+import "./views/cattle-database-view";
+import "./views/people-management-view";
+import "./views/cattle-management-view";
 
+// Define routes - all app routes start with /app/
 const routes = [
   {
     path: "/app/cattle/database",
     view: () => html`
-      <cattle-db-view></cattle-db-view>
+      <cattle-database-view></cattle-database-view>
+    `
+  },
+  {
+    path: "/app/cattle/herds/:herdId",
+    view: (params: Switch.Params) => html`
+      <herd-detail-view herd-id=${params.herdId}></herd-detail-view>
+    `
+  },
+  {
+    path: "/app/cattle/details/:cattleId",
+    view: (params: Switch.Params) => html`
+      <cattle-detail-view cattle-id=${params.cattleId}></cattle-detail-view>
     `
   },
   {
     path: "/app/cattle",
     view: () => html`
-      <cattle-view></cattle-view>
+      <cattle-management-view></cattle-management-view>
+    `
+  },
+  {
+    path: "/app/people/farmhands/:farmhandId",
+    view: (params: Switch.Params) => html`
+      <farmhand-detail-view farmhand-id=${params.farmhandId}></farmhand-detail-view>
     `
   },
   {
     path: "/app/people",
     view: () => html`
-      <people-view></people-view>
+      <people-management-view></people-management-view>
+    `
+  },
+  {
+    path: "/app/operators/:operatorId",
+    view: (params: Switch.Params) => html`
+      <operator-detail-view operator-id=${params.operatorId}></operator-detail-view>
     `
   },
   {
@@ -41,27 +70,45 @@ const routes = [
   {
     path: "/",
     redirect: "/app"
-  },
-  { path: '/login', view: 'login-view' },
-  { path: '/newuser', view: 'signup-view' },
+  }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-  const isDarkMode = localStorage.getItem('darkMode') === 'true';
-  document.body.classList.toggle('dark-mode', isDarkMode);
-});
-
+// Define all custom elements
 define({
-  "mu-auth": Auth.Provider,
-  "mu-history": History.Provider,
+  "ranch-auth": Auth.Provider,
+  "ranch-history": History.Provider,
   "ranch-header": HeaderElement,
-  "home-view": HomeViewElement,
-  "cattle-view": CattleViewElement,
-  "cattle-db-view": CattleDbViewElement,
-  "people-view": PeopleViewElement,
-  "mu-switch": class AppSwitch extends Switch.Element {
+  "ranch-cattle": RanchCattle,
+  "ranch-switch": class AppSwitch extends Switch.Element {
     constructor() {
       super(routes, "ranch:history", "ranch:auth");
     }
+  }
+});
+
+// Handle authentication redirects and setup
+window.addEventListener('DOMContentLoaded', () => {
+  // Set up authentication context
+  const authProvider = document.querySelector('ranch-auth');
+  if (authProvider) {
+    // Listen for auth events
+    authProvider.addEventListener('auth:message', (event: any) => {
+      const [command, data] = event.detail;
+      
+      switch (command) {
+        case 'auth/signin':
+          if (data.token) {
+            localStorage.setItem('token', data.token);
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            }
+          }
+          break;
+        case 'auth/signout':
+          localStorage.removeItem('token');
+          window.location.href = '/login.html';
+          break;
+      }
+    });
   }
 });
