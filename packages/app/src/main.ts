@@ -1,11 +1,14 @@
-// src/main.ts
 import {
   Auth,
   define,
   History,
-  Switch
+  Switch,
+  Store
 } from "@calpoly/mustang";
 import { html } from "lit";
+import { Msg } from "./messages";
+import { Model, init } from "./model";
+import update from "./update";
 
 // Import components
 import { HeaderElement } from "./components/ranch-header";
@@ -14,6 +17,7 @@ import { RanchCattle } from "./components/ranch-cattle";
 // Import views
 import "./views/home-view";
 import "./views/cattle-database-view";
+import "./views/cattle-detail-view";
 import "./views/people-management-view";
 import "./views/cattle-management-view";
 
@@ -79,6 +83,11 @@ define({
   "ranch-history": History.Provider,
   "ranch-header": HeaderElement,
   "ranch-cattle": RanchCattle,
+  "ranch-store": class AppStore extends Store.Provider<Model, Msg> {
+    constructor() {
+      super(update, init, "ranch:auth");
+    }
+  },
   "ranch-switch": class AppSwitch extends Switch.Element {
     constructor() {
       super(routes, "ranch:history", "ranch:auth");

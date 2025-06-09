@@ -1,26 +1,35 @@
-import { LitElement, html, css } from 'lit';
-import { state } from 'lit/decorators.js';
+import { View } from "@calpoly/mustang";
+import { html, css } from "lit";
+import { state } from "lit/decorators.js";
+import { Cattle } from "server/models";
+import { Msg } from "../messages";
+import { Model } from "../model";
 
-export class CattleDatabaseViewElement extends LitElement {
-  @state() private cattle: any[] = [];
-  @state() private loading = true;
+export class CattleDatabaseViewElement extends View<Model, Msg> {
+  
+  @state()
+  get cattle(): Cattle[] {
+    return this.model.cattle || [];
+  }
+
+  @state()
+  get loading(): boolean {
+    return this.model.loading || false;
+  }
+
+  @state()
+  get error(): string | undefined {
+    return this.model.error;
+  }
+
+  constructor() {
+    super("ranch:model");
+  }
 
   connectedCallback() {
     super.connectedCallback();
-    this.fetchCattle();
-  }
-
-  async fetchCattle() {
-    try {
-      const response = await fetch('/api/cattle');
-      if (response.ok) {
-        this.cattle = await response.json();
-      }
-    } catch (error) {
-      console.error('Error fetching cattle:', error);
-    } finally {
-      this.loading = false;
-    }
+    // Load cattle when the view is connected
+    this.dispatchMessage(["cattle/load", {}]);
   }
 
   static styles = css`
@@ -71,6 +80,28 @@ export class CattleDatabaseViewElement extends LitElement {
       cursor: pointer;
       width: 200px;
     }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--color-accent);
+    }
+
+    .error {
+      background-color: #ffebee;
+      color: #d32f2f;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin: 20px 0;
+    }
+
+    svg.icon {
+      display: inline;
+      width: 7em;
+      height: 7em;
+      fill: var(--color-accent-light);
+      vertical-align: top;
+    }
   `;
 
   render() {
@@ -83,10 +114,16 @@ export class CattleDatabaseViewElement extends LitElement {
         <p>View and manage cattle records from the MongoDB database</p>
       </header>
 
+      ${this.error ? html`
+        <div class="error">
+          <strong>Error:</strong> ${this.error}
+        </div>
+      ` : ''}
+
       <section>
         <h2>Cattle Records</h2>
         ${this.loading ? 
-          html`<p>Loading cattle data...</p>` :
+          html`<div class="loading">Loading cattle data...</div>` :
           html`
             <div class="cattle-grid">
               ${this.cattle.map(animal => html`
@@ -152,7 +189,7 @@ export class CattleDatabaseViewElement extends LitElement {
     `;
   }
 
-  private async _handleSubmit(event: Event) {
+  private _handleSubmit(event: Event) {
     event.preventDefault();
     const form = event.target as HTMLFormElement;
     const formData = new FormData(form);
@@ -164,27 +201,21 @@ export class CattleDatabaseViewElement extends LitElement {
       }
     }
 
-    try {
-      const response = await fetch('/api/cattle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cattleData),
-      });
-
-      if (response.ok) {
-        form.reset();
-        alert('Cattle added successfully!');
-        this.fetchCattle(); // Refresh the list
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to add cattle: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error('Error adding cattle:', error);
-      alert('Failed to add cattle');
+    // Convert weight to number if provided
+    if (cattleData.weight) {
+      cattleData.weight = Number(cattleData.weight);
     }
+
+    // Convert date string to Date object if provided
+    if (cattleData.dateOfBirth) {
+      cattleData.dateOfBirth = new Date(cattleData.dateOfBirth);
+    }
+
+    // Dispatch message to create cattle
+    this.dispatchMessage(["cattle/create", { cattle: cattleData }]);
+    
+    // Reset form
+    form.reset();
   }
 }
 

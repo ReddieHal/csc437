@@ -17,10 +17,12 @@
 <body>
     <ranch-history provides="ranch:history">
         <ranch-auth provides="ranch:auth" redirect="/login.html">
-            <article class="page">
-                <ranch-header></ranch-header>
-                <ranch-switch></ranch-switch>
-            </article>
+            <ranch-store provides="ranch:model">
+                <article class="page">
+                    <ranch-header></ranch-header>
+                    <ranch-switch></ranch-switch>
+                </article>
+            </ranch-store>
         </ranch-auth>
     </ranch-history>
     

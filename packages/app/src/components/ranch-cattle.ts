@@ -1,79 +1,37 @@
 // src/components/ranch-cattle.ts
-import { LitElement, html, css } from 'lit';
+import { View } from "@calpoly/mustang";
+import { html, css } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { Observer } from '@calpoly/mustang';
+import { Cattle } from "server/models";
+import { Msg } from "../messages";
+import { Model } from "../model";
 
-interface Cattle {
-  cattleId: string;
-  name: string;
-  breed: string;
-  dateOfBirth?: string;
-  weight?: number;
-  gender: 'male' | 'female';
-  healthStatus?: string;
-  location?: string;
-  caretakerId?: string;
-}
-
-interface AuthUser {
-  authenticated: boolean;
-  token?: string;
-  username?: string;
-}
-
-interface AuthModel {
-  user?: AuthUser;
-}
-
-export class RanchCattle extends LitElement {
+export class RanchCattle extends View<Model, Msg> {
   @property() src?: string;
-  @state() private cattle: Cattle[] = [];
-  @state() private loading = true;
-  @state() private error: string | null = null;
 
-  _authObserver = new Observer<AuthModel>(this, "ranch:auth");
-  _user?: AuthUser;
+  @state()
+  get cattle(): Cattle[] {
+    return this.model.cattle || [];
+  }
+
+  @state()
+  get loading(): boolean {
+    return this.model.loading || false;
+  }
+
+  @state()
+  get error(): string | undefined {
+    return this.model.error;
+  }
+
+  constructor() {
+    super("ranch:model");
+  }
 
   connectedCallback() {
     super.connectedCallback();
-    
-    this._authObserver.observe((auth: AuthModel) => {
-      this._user = auth.user;
-    });
-    
-    if (this.src) this.fetchCattle(this.src);
-  }
-
-  get authorization(): HeadersInit | undefined {
-    if (this._user?.authenticated && this._user.token) {
-      return {
-        Authorization: `Bearer ${this._user.token}`
-      };
-    }
-    return undefined;
-  }
-
-  public async fetchCattle(url: string) {
-    try {
-      this.loading = true;
-      this.error = null;
-      
-      const res = await fetch(url, { 
-        headers: this.authorization 
-      });
-      
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`${res.status} ${res.statusText}: ${errorText}`);
-      }
-      
-      this.cattle = await res.json();
-      this.loading = false;
-    } catch (err) {
-      console.error('Error fetching cattle:', err);
-      this.error = err instanceof Error ? err.message : 'Unknown error';
-      this.loading = false;
-    }
+    // Load cattle data when component connects
+    this.dispatchMessage(["cattle/load", {}]);
   }
 
   static styles = css`
@@ -117,6 +75,7 @@ export class RanchCattle extends LitElement {
     
     .loading {
       background-color: #f8f9fa;
+      color: var(--color-accent);
     }
     
     .error {
