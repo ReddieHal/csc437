@@ -1,4 +1,3 @@
-// packages/app/src/components/cattle-edit-form.ts
 import { define, Form, View } from "@calpoly/mustang";
 import { html, css } from 'lit';
 import { property, state } from 'lit/decorators.js';
@@ -36,7 +35,6 @@ export class CattleEditFormElement extends View<Model, Msg> {
   connectedCallback() {
     super.connectedCallback();
     if (this.cattleId) {
-      // Load cattle data when component connects
       this.dispatchMessage(["cattle/select", { cattleId: this.cattleId }]);
     }
   }
@@ -358,25 +356,21 @@ export class CattleEditFormElement extends View<Model, Msg> {
   handleSubmit(event: Form.SubmitEvent<Cattle>) {
     const cattleData = event.detail;
     
-    // Convert weight to number if provided
     if (cattleData.weight) {
       cattleData.weight = Number(cattleData.weight);
     }
 
-    // Convert date string to Date object if provided
     if (cattleData.dateOfBirth) {
       cattleData.dateOfBirth = new Date(cattleData.dateOfBirth);
     }
 
     if (this.cattle) {
-      // Update existing cattle
       this.dispatchMessage([
         "cattle/save",
         {
           cattleId: this.cattle.cattleId,
           cattle: cattleData,
           onSuccess: () => {
-            // Navigate back to cattle detail view
             window.history.pushState(
               {},
               '',
@@ -390,13 +384,11 @@ export class CattleEditFormElement extends View<Model, Msg> {
         }
       ]);
     } else {
-      // Create new cattle
       this.dispatchMessage([
         "cattle/create",
         {
           cattle: cattleData,
           onSuccess: () => {
-            // Navigate to cattle database view
             window.history.pushState({}, '', '/app/cattle/database');
             window.dispatchEvent(new PopStateEvent('popstate'));
           },

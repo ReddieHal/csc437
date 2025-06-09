@@ -96,12 +96,9 @@ define({
   }
 });
 
-// Handle authentication redirects and setup
 window.addEventListener('DOMContentLoaded', () => {
-  // Set up authentication context
   const authProvider = document.querySelector('ranch-auth');
   if (authProvider) {
-    // Listen for auth events
     authProvider.addEventListener('auth:message', (event: any) => {
       const [command, data] = event.detail;
       

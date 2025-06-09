@@ -28,7 +28,6 @@ export class CattleDatabaseViewElement extends View<Model, Msg> {
 
   connectedCallback() {
     super.connectedCallback();
-    // Load cattle when the view is connected
     this.dispatchMessage(["cattle/load", {}]);
   }
 
@@ -201,20 +200,16 @@ export class CattleDatabaseViewElement extends View<Model, Msg> {
       }
     }
 
-    // Convert weight to number if provided
     if (cattleData.weight) {
       cattleData.weight = Number(cattleData.weight);
     }
 
-    // Convert date string to Date object if provided
     if (cattleData.dateOfBirth) {
       cattleData.dateOfBirth = new Date(cattleData.dateOfBirth);
     }
 
-    // Dispatch message to create cattle
     this.dispatchMessage(["cattle/create", { cattle: cattleData }]);
     
-    // Reset form
     form.reset();
   }
 }

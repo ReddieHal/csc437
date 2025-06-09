@@ -46,11 +46,9 @@ export class HeaderElement extends LitElement {
   }
 
   setupDarkMode() {
-    // Initialize dark mode from localStorage
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
     document.body.classList.toggle('dark-mode', isDarkMode);
     
-    // Update the switch after render
     this.updateComplete.then(() => {
       const darkSwitch = this.shadowRoot?.querySelector('#darkSwitch') as HTMLInputElement;
       if (darkSwitch) {
