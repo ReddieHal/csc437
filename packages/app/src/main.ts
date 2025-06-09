@@ -5,7 +5,7 @@ import {
   History,
   Switch
 } from "@calpoly/mustang";
-import { html, LitElement } from "lit";
+import { html } from "lit";
 
 // Import components
 import { HeaderElement } from "./components/ranch-header";

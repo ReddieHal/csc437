@@ -1,4 +1,4 @@
-import { css, html, LitElement } from "lit";
+import { html, LitElement } from "lit";
 import { property } from "lit/decorators.js";
 
 export class OperatorViewElement extends LitElement {

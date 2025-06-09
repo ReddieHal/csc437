@@ -1,0 +1,15 @@
+[
+    {
+      "name": "John Smith",
+      "role": "Ranch Manager",
+      "experience": "15 years",
+      "detailLink": "/operators/john-smith.html"
+    },
+    {
+      "name": "Ava Ramirez",
+      "role": "Veterinarian",
+      "experience": "7 years",
+      "detailLink": "/operators/ava-ramirez.html"
+    }
+  ]
+  

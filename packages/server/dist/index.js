@@ -25,6 +25,8 @@ var import_express = __toESM(require("express"));
 var import_mongo = require("./services/mongo");
 var import_ranch_worker_svc = require("./services/ranch-worker-svc");
 var import_cattle_svc = require("./services/cattle-svc");
+var import_promises = __toESM(require("node:fs/promises"));
+var import_path = __toESM(require("path"));
 var import_auth = __toESM(require("./routes/auth"));
 (0, import_mongo.connect)("ranchup");
 const app = (0, import_express.default)();
@@ -37,6 +39,18 @@ app.get("/hello", (req, res) => {
 });
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+app.use("/app", (req, res) => {
+  const indexHtml = import_path.default.resolve(staticDir, "index.html");
+  import_promises.default.readFile(indexHtml, { encoding: "utf8" }).then(
+    (html) => res.send(html)
+  );
+});
+app.use("/login.html", (req, res) => {
+  const loginHtml = import_path.default.resolve(staticDir, "login.html");
+  import_promises.default.readFile(loginHtml, { encoding: "utf8" }).then(
+    (html) => res.send(html)
+  );
 });
 app.get("/ranch_worker/:userid", (req, res) => {
   const { userid } = req.params;
