@@ -1,10 +1,7 @@
-// Dark mode utility for SPA
 export function setupDarkMode() {
-  // Initialize dark mode from localStorage
   const isDarkMode = localStorage.getItem('darkMode') === 'true';
   document.body.classList.toggle('dark-mode', isDarkMode);
   
-  // Set up dark mode toggle handlers
   const setupToggles = () => {
     const darkSwitches = document.querySelectorAll('#darkSwitch');
     
@@ -12,7 +9,6 @@ export function setupDarkMode() {
       if (darkSwitch instanceof HTMLInputElement) {
         darkSwitch.checked = isDarkMode;
         
-        // Remove existing listeners to avoid duplicates
         darkSwitch.removeEventListener('change', handleToggle);
         darkSwitch.addEventListener('change', handleToggle);
       }
@@ -26,7 +22,6 @@ export function setupDarkMode() {
     document.body.classList.toggle('dark-mode', isDark);
     localStorage.setItem('darkMode', isDark.toString());
     
-    // Update all other toggles
     const otherToggles = document.querySelectorAll('#darkSwitch');
     otherToggles.forEach(toggle => {
       if (toggle !== target && toggle instanceof HTMLInputElement) {
@@ -35,10 +30,8 @@ export function setupDarkMode() {
     });
   };
   
-  // Set up toggles immediately
   setupToggles();
   
-  // Watch for new dark mode toggles being added to the DOM
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList') {
@@ -62,7 +55,6 @@ export function setupDarkMode() {
   });
 }
 
-// Initialize dark mode when DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', setupDarkMode);
 } else {

@@ -10,19 +10,16 @@ import { Msg } from "./messages";
 import { Model, init } from "./model";
 import update from "./update";
 
-// Import components
 import { HeaderElement } from "./components/ranch-header";
 import { RanchCattle } from "./components/ranch-cattle";
 import { CattleEditFormElement } from "./components/cattle-edit-form";
 
-// Import views
 import "./views/home-view";
 import "./views/cattle-database-view";
 import "./views/cattle-detail-view";
 import "./views/people-management-view";
 import "./views/cattle-management-view";
 
-// Define routes - all app routes start with /app/
 const routes = [
   {
     path: "/app/cattle/database",

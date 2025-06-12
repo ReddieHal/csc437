@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// Interface for RanchWorker
 export interface IRanchWorker {
   userid: string;
   ranchid: string;
@@ -10,10 +9,8 @@ export interface IRanchWorker {
   image: string | undefined;
 }
 
-// Interface for the Document with MongoDB methods
 interface RanchWorkerDocument extends IRanchWorker, Document {}
 
-// Create the Schema
 const ranchWorkerSchema = new Schema<RanchWorkerDocument>({
   userid: { type: String, required: true, unique: true },
   ranchid: { type: String, required: true },
@@ -23,5 +20,4 @@ const ranchWorkerSchema = new Schema<RanchWorkerDocument>({
   image: { type: String, required: false }
 });
 
-// Create and export the model
 export default mongoose.model<RanchWorkerDocument>('ranch_worker', ranchWorkerSchema);

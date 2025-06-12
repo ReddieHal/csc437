@@ -21,7 +21,6 @@ export class PeopleManagementViewElement extends LitElement {
 
   async loadPeople() {
     try {
-      // Load from your JSON data or API
       const response = await fetch('/data/ranchPeople.json');
       if (response.ok) {
         this.people = await response.json();
@@ -189,7 +188,6 @@ export class PeopleManagementViewElement extends LitElement {
       return this.people;
     }
     
-    // Filter based on role - you can customize this logic
     return this.people.filter(person => {
       switch (this.activeTab) {
         case 'farmhands':

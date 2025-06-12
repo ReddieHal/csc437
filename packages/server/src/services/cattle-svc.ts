@@ -34,7 +34,6 @@ static async list(filter: Record<string, unknown>): Promise<ICattle[] | null> {
 
   static async create(cattle: ICattle): Promise<ICattle | null> {
     try {
-      // Validate required fields
       if (!cattle.cattleId || !cattle.name || !cattle.breed || !cattle.gender) {
         console.error('Missing required field(s):', 
           !cattle.cattleId ? 'cattleId' : '',

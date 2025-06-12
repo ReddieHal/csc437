@@ -1,4 +1,3 @@
-// src/views/cattle-management-view.ts
 import { LitElement, html, css } from 'lit';
 import { state } from 'lit/decorators.js';
 

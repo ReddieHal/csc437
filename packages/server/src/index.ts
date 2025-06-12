@@ -110,12 +110,10 @@ app.get("/api/cattle", (req, res) => {
   const q = req.query;          // gender, dateOfBirth[gte], etc.
   const mongo: Record<string, unknown> = {};
 
-  // gender filter  ──────────────
   if (q.gender === 'male' || q.gender === 'female') {
     mongo.gender = q.gender;
   }
 
-  // age filter (dateOfBirth[gte]) ─
   if (q['dateOfBirth[gte]']) {
     mongo.dateOfBirth = { $gte: new Date(q['dateOfBirth[gte]'] as string) };
   }
@@ -129,7 +127,6 @@ app.get("/api/cattle", (req, res) => {
 app.post("/api/cattle", (req: Request, res: Response) => {
   console.log("Received cattle data:", req.body);
   
-  // Check for required fields
   const { cattleId, name, breed, gender } = req.body;
   if (!cattleId || !name || !breed || !gender) {
     return res.status(400).json({

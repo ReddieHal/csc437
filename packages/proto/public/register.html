@@ -58,7 +58,6 @@
           messageDiv.className = "success";
           localStorage.setItem("token", data.token);
           window.location.href = "/login.html";
-          // Optionally redirect or clear form
           form.reset();
         } else if (response.status === 409) {
           const err = await response.json();

@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Register - Ranch Hand</title>
   
-  <!-- Load the same fonts as your main app -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
   
-  <!-- CSS files -->
   <link rel="stylesheet" href="/styles/tokens.css">
   <link rel="stylesheet" href="/styles/reset.css">
   
@@ -184,7 +182,7 @@
       const password = form.password.value;
       const confirmPassword = form.confirmPassword.value;
 
-      // Validation
+      
       if (!username || !password || !confirmPassword) {
         showMessage("Please fill in all fields.", "error");
         return;
@@ -200,7 +198,6 @@
         return;
       }
 
-      // Show loading state
       registerButton.disabled = true;
       registerButton.textContent = "Creating Account...";
       showMessage("Creating your account...", "loading");
@@ -216,7 +213,6 @@
           const data = await response.json();
           showMessage("Registration successful! Redirecting to login...", "success");
           
-          // Optionally save token if your register endpoint returns one
           if (data.token) {
             localStorage.setItem("token", data.token);
             setTimeout(() => {
@@ -256,7 +252,6 @@
       messageDiv.className = `message ${type}`;
     }
 
-    // Real-time password confirmation validation
     document.getElementById("confirmPassword").addEventListener("input", function() {
       const password = document.getElementById("password").value;
       const confirmPassword = this.value;
@@ -268,7 +263,6 @@
       }
     });
 
-    // Check if already logged in
     window.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('token');
       if (token) {

@@ -21,7 +21,6 @@ export class HeaderElement extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    // Decode JWT directly from localStorage
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -81,10 +80,8 @@ export class HeaderElement extends LitElement {
     document.body.classList.toggle('dark-mode', isDark);
     localStorage.setItem('darkMode', isDark.toString());
     
-    // Update icon opacity
     this.updateIconOpacity(isDark);
     
-    // Dispatch custom event for other components that might need to know
     const customEvent = new CustomEvent('darkmode:toggle', {
       bubbles: true,
       detail: { isDarkMode: isDark }

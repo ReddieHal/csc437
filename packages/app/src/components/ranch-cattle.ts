@@ -1,4 +1,3 @@
-// src/components/ranch-cattle.ts
 import { View } from "@calpoly/mustang";
 import { html, css } from 'lit';
 import { property, state } from 'lit/decorators.js';

@@ -47,7 +47,6 @@ function handleDarkModeToggle(event) {
   localStorage.setItem('darkMode', isDarkMode);
 }
 
-// Initialize when DOM is loaded or immediately if already loaded
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initDarkMode);
 } else {
